@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Topbar({ route }) {
@@ -7,16 +6,14 @@ export default function Topbar({ route }) {
 
 	return (
 		<div className='flex justify-end mt-3 mx-3'>
-			<Button
-				isProcessing
-				// type='submit'
+			<button
 				onClick={() => {
 					navigate(`/${route}`);
 				}}
-				className=' text-white bg-cyan-700 enabled:hover:bg-emerald-500 p-2 rounded-xl'
+				className=' text-white bg-[#ff8906] p-2 rounded-xl enabled:hover:bg-orange-500 '
 				size='lg'>
-				<h1 className='text-lg uppercase tracking-widest'>{route}</h1>
-			</Button>
+				<h1 className='text-lg font-bold uppercase tracking-widest'>{route}</h1>
+			</button>
 		</div>
 	);
 }
