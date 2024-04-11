@@ -13,7 +13,6 @@ export default function Input({ type, name, value, onChange, placeholder }) {
 				value={value} // Set the value to the current state
 				onChange={onChange}
 				placeholder={placeholder}
-				className='px-4 py-2 border border-black rounded-md focus:outline-none focus:border-black focus:border-2'
 			/>
 		</form>
 	);

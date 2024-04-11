@@ -14,7 +14,6 @@ export default function Topbar({ route }) {
 				onClick={() => {
 					navigate(`/${route}`);
 				}}
-				className=' text-white bg-[#ff8906] p-2 rounded-xl enabled:hover:bg-orange-500 '
 				size='lg'>
 				<h1 className='text-lg font-bold uppercase tracking-widest'>
 					{routeName}
