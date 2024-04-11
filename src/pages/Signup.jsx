@@ -37,8 +37,7 @@ export default function Login() {
 					onClick={() => {
 						navigate('/');
 					}}
-					className=' text-white bg-[#f25f4c] p-2 rounded-xl enabled:hover:bg-red-500 hover:border-2 hover:border-white '
-					size='lg'>
+					className=' text-white bg-[#f25f4c] p-2 rounded-xl enabled:hover:bg-red-500 hover:border-2 hover:border-white '>
 					<h1 className='text-lg font-bold tracking-widest'>LOGIN</h1>
 				</button>
 			</div>
