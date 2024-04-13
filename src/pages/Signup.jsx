@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Topbar from '../components/Topbar';
 import Logo from '../assets/logo.png';
+import axios from '../axios';
 
 export default function Login() {
 	const [firstName, setFirstName] = useState(null);
@@ -14,12 +15,64 @@ export default function Login() {
 	const [passwordConfirmation, setPasswordConfirmation] = useState(null);
 	const navigate = useNavigate();
 
-	const handleSubmit = (e) => {
+	const signup = async (
+		email,
+		password,
+		firstName,
+		lastName,
+		birthDate,
+		gender,
+		address
+	) => {
+		try {
+			const res = await axios.post(`/signup`, {
+				first_name: firstName,
+				last_name: lastName,
+				birth_date: birthDate,
+				gender: gender,
+				address: address,
+				email: email,
+				password: password,
+			});
+			console.log(res);
+			// localStorage.setItem('accessToken', res.data.token);
+			return { success: true };
+		} catch (err) {
+			return { success: false, message: err };
+		}
+	};
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		navigate('/dashboard');
+		if (password !== passwordConfirmation) {
+			console.log('false');
+			alert('Password confirmation does not match');
+			return;
+		}
 
-		console.log(email, password);
+		try {
+			const authStatus = await signup(
+				email,
+				password,
+				firstName,
+				lastName,
+				birthDate,
+				gender,
+				address
+			);
+			console.log(authStatus);
+			if (authStatus.success) {
+				// Check if authStatus is true before navigating
+				navigate('/dashboard');
+			} else {
+				setEmail('');
+				setPassword('');
+				console.log(authStatus.message);
+			}
+		} catch (error) {
+			console.error(error); // Handle error
+		}
 
 		setFirstName('');
 		setLastName('');
@@ -31,7 +84,7 @@ export default function Login() {
 		setPasswordConfirmation('');
 	};
 	return (
-		<div className='min-h-screen bg-gradient-to-b from-blue-950 from-10%  via-blue-700 to-cyan-400 to-100%  flex flex-col'>
+		<div className='min-h-screen bg-[#011627]  flex flex-col'>
 			<div className='flex justify-end mt-3 mx-3'>
 				<button
 					onClick={() => {
@@ -64,7 +117,6 @@ export default function Login() {
 								onChange={(event) => setFirstName(event.target.value)}
 								placeholder='Enter first name'
 								className='input'
-								required
 							/>
 						</div>
 						<div className='flex-1 flex flex-col'>
@@ -79,7 +131,6 @@ export default function Login() {
 								onChange={(event) => setLastName(event.target.value)}
 								placeholder='Enter last name'
 								className='input'
-								required
 							/>
 						</div>
 					</div>
@@ -96,7 +147,6 @@ export default function Login() {
 								onChange={(event) => setBirthDate(event.target.value)}
 								placeholder='Enter date of birth'
 								className='input h-full text-xs'
-								required
 							/>
 						</div>
 						<div className='flex-1 flex flex-col'>
@@ -108,8 +158,7 @@ export default function Login() {
 							<select
 								value={gender}
 								onChange={(event) => setGender(event.target.value)}
-								className='input h-full'
-								required>
+								className='input h-full'>
 								<option value=''>Select Gender</option>
 								<option value='male'>Male</option>
 								<option value='female'>Female</option>
@@ -127,7 +176,6 @@ export default function Login() {
 								onChange={(event) => setAddress(event.target.value)}
 								rows='5'
 								className='input h-12'
-								required
 							/>
 						</div>
 					</div>
@@ -143,7 +191,6 @@ export default function Login() {
 							onChange={(event) => setEmail(event.target.value)}
 							placeholder='Enter email address'
 							className='input'
-							required
 						/>
 					</div>
 					<div className='flex flex-col'>
@@ -158,7 +205,6 @@ export default function Login() {
 							onChange={(event) => setPassword(event.target.value)}
 							placeholder='Enter password'
 							className='input'
-							required
 						/>
 					</div>
 					<div className='flex flex-col'>
@@ -173,7 +219,6 @@ export default function Login() {
 							onChange={(event) => setPasswordConfirmation(event.target.value)}
 							placeholder='Enter password confirmation'
 							className='input'
-							required
 						/>
 					</div>
 					<button

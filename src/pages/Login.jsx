@@ -1,24 +1,52 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Topbar from '../components/Topbar';
 import Logo from '../assets/logo.png';
+import axios from '../axios';
 
 export default function Login() {
 	const [email, setEmail] = useState(null);
 	const [password, setPassword] = useState(null);
 	const navigate = useNavigate();
 
-	const handleSubmit = (e) => {
+	const login = async (email, password) => {
+		try {
+			const res = await axios.post(`/login`, {
+				email: email,
+				password: password,
+			});
+			console.log(res);
+			localStorage.setItem('accessToken', res.data.token);
+			return { success: true };
+		} catch (err) {
+			return { success: false, message: err.response.data.error };
+		}
+	};
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		console.log(email, password);
-		navigate('/dashboard');
+
+		try {
+			const authStatus = await login(email, password);
+			console.log(authStatus);
+			if (authStatus.success) {
+				// Check if authStatus is true before navigating
+				navigate('/dashboard');
+			} else {
+				setEmail('');
+				setPassword('');
+				console.log(authStatus.message);
+			}
+		} catch (error) {
+			console.error(error); // Handle error
+		}
 
 		setEmail('');
 		setPassword('');
 	};
 	return (
-		<div className='min-h-screen bg-gradient-to-b from-blue-950 from-10%  via-blue-700 to-cyan-400 to-100%  flex flex-col'>
+		<div className='min-h-screen bg-[#011627]  flex flex-col'>
 			<div className='flex justify-end mt-3 mx-3'>
 				<button
 					onClick={() => {
@@ -50,7 +78,6 @@ export default function Login() {
 							onChange={(event) => setEmail(event.target.value)}
 							placeholder='Enter email address'
 							className='text-[#011627] px-4 py-2 border border-black rounded-md focus:outline-none  focus:border-2'
-							required
 						/>
 					</div>
 					<div className='flex flex-col'>
@@ -65,7 +92,6 @@ export default function Login() {
 							onChange={(event) => setPassword(event.target.value)}
 							placeholder='Enter password'
 							className='text-[#011627] px-4 py-2 border border-black rounded-md focus:outline-none focus:border-2'
-							required
 						/>
 					</div>
 					<button
