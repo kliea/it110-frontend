@@ -4,7 +4,7 @@ import Topbar from '../components/Topbar';
 import Logo from '../assets/logo.png';
 import axios from '../axios';
 
-export default function Login() {
+export default function Login({ setToken }) {
 	const [firstName, setFirstName] = useState(null);
 	const [lastName, setLastName] = useState(null);
 	const [birthDate, setBirthDate] = useState(null);
@@ -35,7 +35,8 @@ export default function Login() {
 				password: password,
 			});
 			console.log(res);
-			// localStorage.setItem('accessToken', res.data.token);
+			localStorage.setItem('accessToken', res.data.token);
+			setToken(res.data.token);
 			return { success: true };
 		} catch (err) {
 			return { success: false, message: err };

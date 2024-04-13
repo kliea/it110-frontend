@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
 import axios from '../axios';
 
-export default function Login() {
+export default function Login({ setToken }) {
 	const [email, setEmail] = useState(null);
 	const [password, setPassword] = useState(null);
 	const navigate = useNavigate();
@@ -16,6 +16,7 @@ export default function Login() {
 			});
 			console.log(res);
 			localStorage.setItem('accessToken', res.data.token);
+			setToken(true);
 			return { success: true };
 		} catch (err) {
 			return { success: false, message: err.response.data.error };
@@ -24,8 +25,6 @@ export default function Login() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		console.log(email, password);
 
 		try {
 			const authStatus = await login(email, password);
