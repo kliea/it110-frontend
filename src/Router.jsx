@@ -22,7 +22,10 @@ export default function Router() {
 				<Routes>
 					{token ? (
 						<>
-							<Route path='/dashboard' element={<Dashboard />} />
+							<Route
+								path='/dashboard'
+								element={<Dashboard setToken={setToken} />}
+							/>
 							<Route
 								path='*'
 								element={

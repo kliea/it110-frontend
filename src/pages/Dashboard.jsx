@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axios';
 
-export default function Dashboard() {
+export default function Dashboard({ setToken }) {
 	const [users, setUsers] = useState(null);
 	const navigate = useNavigate();
 
@@ -28,6 +28,7 @@ export default function Dashboard() {
 			if (response.status === 200) {
 				console.log(response.data);
 				localStorage.removeItem('accessToken');
+				setToken('');
 				navigate('/');
 			}
 		} catch (error) {
